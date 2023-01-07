@@ -196,7 +196,7 @@ SELECT * FROM tbl_works;
 			WHEN salary * 1.1 <= 100000 THEN salary * 1.1
 			ELSE salary * 1.03
 		END
-    WHERE employee_name IN (SELECT manager_name FROM tbl_manages);
+	WHERE employee_name IN (SELECT manager_name FROM tbl_manages);
 	
 -- Ques 3.e)
 	DELETE FROM tbl_works WHERE company_name = "Small Bank Corporation";
