@@ -87,12 +87,6 @@ SELECT * FROM tbl_company;
 SELECT * FROM tbl_manages;
 SELECT * FROM tbl_works;
 
-UPDATE tbl_employee 
-SET city = 'pokhara' WHERE employee_name ='Mary';
-
-UPDATE tbl_works 
-SET salary= salary- 0.10* salary;
-
 
 -- Question 2
 -- Ques 2.a
@@ -130,7 +124,7 @@ SET salary= salary- 0.10* salary;
         WHERE tbl_works.company_name = tbl_company.company_name 
         AND tbl_employee.city = tbl_company.city;
 
--- Ques 2.e   Not done:
+-- Ques 2.e   (Not done: Confused in this question)
 		-- Using nested sub-query:
         SELECT * FROM tbl_employee
         WHERE tbl_employee.city  
@@ -173,15 +167,42 @@ SET salary= salary- 0.10* salary;
      
 -- Ques 2.l) 
 	SELECT company_name FROM 
-    
-	( SELECT tbl_works.company_name, AVG(tbl_works.salary) as company_avg_salary FROM tbl_works -- responsible to generate table containing average salary of all company
+    ( SELECT tbl_works.company_name, AVG(tbl_works.salary) as company_avg_salary FROM tbl_works -- responsible to generate table containing average salary of all company
     GROUP BY company_name
     ORDER BY AVG(tbl_works.salary) ASC)  AS tbl_der_avg_salary
-    
     WHERE company_avg_salary  <  -- comparison of salary of derived average table (tbl_der_avg_salary).
-    
-	(SELECT AVG(salary) FROM tbl_works WHERE tbl_works.company_name = "First Bank Corporation") -- to generate the avergae salary of first bank corporation.
+    (SELECT AVG(salary) FROM tbl_works WHERE tbl_works.company_name = "First Bank Corporation") -- to generate the avergae salary of first bank corporation.
     ;
+    
+    
+-- Question no. 3
+-- Ques 3.a)
+	UPDATE tbl_employee 
+	SET city = 'Newton' WHERE employee_name ='Jones';
+    
+-- Ques 3.b)
+	UPDATE tbl_works 
+    SET salary = salary + 0.10*salary WHERE company_name= "First Bank Corporation";
+    
+-- Ques 3.c)
+	UPDATE tbl_works
+    SET salary= salary + 0.10*salary 
+    WHERE employee_name IN (SELECT manager_name FROM tbl_manages);
+	
+-- Ques 3.d)
+	UPDATE works w
+	SET salary = 
+		CASE 
+			WHEN salary * 1.1 <= 100000 THEN salary * 1.1
+			ELSE salary * 1.03
+		END
+    WHERE employee_name IN (SELECT manager_name FROM tbl_manages);
+	
+-- Ques 3.e)
+	DELETE FROM tbl_works WHERE company_name = "Small Bank Corporation";
+
+
+	
     
    
         
