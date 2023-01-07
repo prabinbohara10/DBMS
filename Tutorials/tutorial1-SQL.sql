@@ -172,7 +172,16 @@ SET salary= salary- 0.10* salary;
      LIMIT 1;
      
 -- Ques 2.l) 
-	SELECT AVG(salary) WHERE 
+	SELECT company_name FROM 
+    
+	( SELECT tbl_works.company_name, AVG(tbl_works.salary) as company_avg_salary FROM tbl_works -- responsible to generate table containing average salary of all company
+    GROUP BY company_name
+    ORDER BY AVG(tbl_works.salary) ASC)  AS tbl_der_avg_salary
+    
+    WHERE company_avg_salary  <  -- comparison of salary of derived average table (tbl_der_avg_salary).
+    
+	(SELECT AVG(salary) FROM tbl_works WHERE tbl_works.company_name = "First Bank Corporation") -- to generate the avergae salary of first bank corporation.
+    ;
     
    
         
