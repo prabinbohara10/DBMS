@@ -2,6 +2,7 @@
 -- Database Creation:
 CREATE DATABASE db_org;
 USE db_org;
+SET SQL_SAFE_UPDATES = 0;
 
 -- Table Creation:
 CREATE TABLE tbl_employee
@@ -46,7 +47,8 @@ VALUES ("Prabin" , "annapurna", "pokhara"),
 ("Subek", "Bharatpur galli 787", "Chitwan"),
 ("Sita", "xyc11", "New Road"),
 ("Ram", "rrr 78", "Bharatpur");
-;
+UPDATE  tbl_employee 
+SET street ="Country road 322" where employee_name ="Jones"; -- this is done for question 2.e to make same street and city.
 
 INSERT INTO tbl_company 
 VALUES ("SIVAM", "Biratnagar"),
@@ -80,13 +82,11 @@ VALUES ("Prabin", "Jones"),
 ("Mary", "Jones"),
 ("Elon", "Mary"),
 ("Subek", "Elon");
-DELETE FROM tbl_manages;
 
 SELECT * FROM tbl_employee;
 SELECT * FROM tbl_company;
 SELECT * FROM tbl_manages;
 SELECT * FROM tbl_works;
-
 
 -- Question 2
 -- Ques 2.a
@@ -124,19 +124,13 @@ SELECT * FROM tbl_works;
         WHERE tbl_works.company_name = tbl_company.company_name 
         AND tbl_employee.city = tbl_company.city;
 
--- Ques 2.e   (Not done: Confused in this question)
+-- Ques 2.e   (done but: Confused in this question)
 		-- Using nested sub-query:
-        SELECT * FROM tbl_employee
-        WHERE tbl_employee.city  
-        IN (SELECT  tbl_employee.city FROM tbl_employee, tbl_manages 
-			WHERE tbl_employee.employee_name = tbl_manages.manager_name);
-            
-       SELECT tbl_employee.street AND tbl_employee.city FROM tbl_employee, tbl_manages 
-			WHERE tbl_employee.employee_name = tbl_manages.manager_name;
-            
-		SELECT * FROM tbl_employee WHERE tbl_employee.city 
-        IN (SELECT * FROM tbl_employee INNER JOIN tbl_manages ON tbl_employee.employee_name = tbl_manages.manager_name
-       );
+        SELECT * FROM tbl_employee tbl_e1
+        INNER JOIN tbl_manages tbl_m1 ON tbl_e1.employee_name = tbl_m1.employee_name
+        INNER JOIN tbl_employee tbl_e2 ON tbl_e2.employee_name = tbl_m1.manager_name
+        WHERE tbl_e1.street = tbl_e2.street AND tbl_e1.city = tbl_e2.city ;
+	
        
 -- Ques 2.f)
 		SELECT * FROM tbl_works WHERE company_name <> "First Bank Corporation";
